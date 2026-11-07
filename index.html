@@ -1,116 +1,379 @@
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BLACK RUSSIA UPGRADER</title>
 <style>
+:root{
+ --bg:#080a10;--panel:#131923;--panel2:#0d121b;
+ --red:#ed3045;--gold:#ffc75e;--text:#f4f5fa;
+ --muted:#8d98aa;--line:#293345;--green:#39d69b;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#080a0f;color:#f4f6fb;font:14px Arial,sans-serif}
-header{padding:22px;background:#10141d;border-bottom:1px solid #30394a;display:flex;justify-content:space-between}
-.brand{font-size:21px;font-weight:900}i{color:#f04452}
-main{max-width:1100px;margin:auto;padding:30px 18px}
-.hero{text-align:center;margin:25px 0}
-.hero h1{font-size:38px}.red{color:#f04452}
-p,.muted{color:#8994a6}
-.grid{display:grid;grid-template-columns:1fr 280px;gap:18px}
-.panel{background:#141a24;border:1px solid #30394a;border-radius:14px;padding:18px}
+body{margin:0;background:radial-gradient(ellipse at top,#32101b,transparent 48%),var(--bg);color:var(--text);font:14px Arial,sans-serif}
+header{height:72px;background:#0b0e15ed;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(4%,20px);position:sticky;top:0;z-index:5}
+.logo{font-size:21px;font-weight:1000;letter-spacing:1px}
+.logo span,.red{color:var(--red)}
+nav{display:flex;gap:22px}
+nav a{color:#b1bac9;text-decoration:none;font-size:12px}
+nav a:hover{color:white}
+.balance{background:#1d1b17;border:1px solid #69522b;color:var(--gold);padding:10px 14px;border-radius:9px;font-weight:bold}
+main{max-width:1200px;margin:auto;padding:28px 18px 60px}
+.hero{text-align:center;padding:20px 0 28px}
+.hero small{color:#ff7180;letter-spacing:3px;font-weight:bold}
+.hero h1{font-size:clamp(30px,5vw,48px);margin:12px 0}
+.hero p{color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:17px}
+.panel{background:linear-gradient(145deg,#171e2a,#10151e);border:1px solid var(--line);border-radius:14px;padding:19px;margin-bottom:16px}
+.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.heading h2{font-size:14px;margin:0}
+.muted{color:var(--muted);font-size:10px}
+.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:#0c1119;color:#aeb7c6;border:1px solid var(--line);border-radius:8px;padding:10px 15px;cursor:pointer}
+.tab.active{background:#37131c;border-color:var(--red);color:white}
 .items{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.item{background:#0b1018;color:white;border:1px solid #30394a;border-radius:10px;padding:15px 5px;cursor:pointer}
-.item.active{border:1px solid #f04452;background:#29131b}
-.pic{font-size:38px;display:block;margin-bottom:10px}
-.item b{font-size:11px}
-.stage{margin-top:20px;background:#0b1018;padding:15px;border-radius:12px}
-.slots{display:grid;grid-template-columns:1fr 30px 1fr;gap:8px;align-items:center}
-.slot{border:1px dashed #596477;border-radius:10px;min-height:145px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.arrow{color:#f04452;font-size:25px}
-button.upgrade{width:100%;padding:16px;margin-top:15px;border:0;border-radius:9px;background:#e52d42;color:white;font-weight:bold;cursor:pointer}
-.stat{background:#0b1018;padding:15px;border-radius:10px;margin-bottom:10px}
-.stat strong{display:block;font-size:23px;margin-top:8px}
-.history{margin-top:20px}
-.history div{padding:9px 0;border-bottom:1px solid #30394a;font-size:12px}
-.notice{margin-top:15px;font-size:11px;color:#aab3c2;line-height:1.5}
-@media(max-width:750px){.grid{grid-template-columns:1fr}.items{grid-template-columns:repeat(2,1fr)}}
+.item{position:relative;background:#0b1018;border:1px solid var(--line);border-radius:11px;padding:13px 5px;color:white;cursor:pointer;text-align:center;min-width:0}
+.item:hover{border-color:#86505a}
+.item.active{border-color:var(--red);background:#29131b}
+.item .emoji{font-size:37px;display:block;margin:8px 0 13px}
+.item b{font-size:11px;display:block}
+.item small{font-size:9px;color:var(--muted);display:block;margin-top:6px}
+.rarity{font-size:8px;letter-spacing:1px;text-transform:uppercase}
+.common{color:#aeb8c7}.rare{color:#54a9ff}.epic{color:#be83ff}.legendary{color:var(--gold)}
+.stage{margin-top:18px;background:#0a0f17;border:1px solid #303b4d;border-radius:12px;padding:16px}
+.slots{display:grid;grid-template-columns:1fr 35px 1fr;gap:9px;align-items:center}
+.slot{min-height:150px;background:#111722;border:1px dashed #4a566a;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px}
+.slot .emoji{font-size:49px}
+.slot strong{font-size:12px;margin-top:8px}
+.slot small{font-size:9px;color:var(--muted);margin-top:5px}
+.arrow{font-size:25px;color:var(--red);text-align:center}
+.chance{display:flex;justify-content:space-between;margin-top:16px;font-size:11px;color:var(--muted)}
+.bar{height:7px;background:#252e3d;border-radius:8px;overflow:hidden;margin-top:8px}
+.bar div{height:100%;background:linear-gradient(90deg,#a9162b,#ff596a);transition:width .3s}
+.upgrade{width:100%;padding:16px;margin-top:15px;background:linear-gradient(100deg,#b41930,#f13c50);border:0;border-radius:9px;color:white;font-weight:900;letter-spacing:1px;cursor:pointer}
+.upgrade:hover{filter:brightness(1.15)}
+.upgrade:disabled{opacity:.5;cursor:default}
+.cost{text-align:center;font-size:10px;color:var(--gold);margin-top:9px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#0c1119;border:1px solid var(--line);padding:13px;border-radius:10px}
+.stat span{font-size:10px;color:var(--muted)}
+.stat strong{display:block;font-size:21px;margin-top:7px}
+.stat strong.gold{color:var(--gold)}
+.side-section{margin-top:20px}
+.side-section h3{font-size:12px;margin-bottom:12px}
+.history-row,.inventory-row{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:11px}
+.history-row:last-child,.inventory-row:last-child{border:0}
+.good{color:var(--green)}.bad{color:#ff6474}
+.inventory{max-height:210px;overflow:auto}
+.action{background:#222b39;color:white;border:1px solid #394558;padding:8px 12px;border-radius:7px;cursor:pointer;font-size:10px}
+.action:hover{border-color:var(--red)}
+.disclaimer{font-size:10px;line-height:1.5;color:var(--muted);margin-top:16px}
+footer{text-align:center;color:#667183;font-size:10px;padding:25px}
+.overlay{position:fixed;inset:0;background:#05070beF;z-index:10;display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.result{background:#171e2a;border:1px solid #46536a;border-radius:16px;padding:35px;text-align:center;width:min(390px,100%);box-shadow:0 20px 100px #000}
+.result .emoji{font-size:75px}
+.result h2{font-size:25px}
+.result button{margin-top:18px;width:100%;padding:13px;border:0;border-radius:8px;background:var(--red);color:white;font-weight:bold;cursor:pointer}
+.result.win h2{color:var(--green)}
+.result.lose h2{color:#ff6879}
+.rolling{animation:roll .65s ease-in-out infinite alternate}
+@keyframes roll{from{transform:translateY(-5px) scale(.95);filter:blur(1px)}to{transform:translateY(5px) scale(1.08);filter:blur(0)}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;background:#202a39;padding:12px 18px;border-radius:9px;z-index:20;transition:.2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:850px){.layout{grid-template-columns:1fr}nav{display:none}}
+@media(max-width:500px){header{padding:0 12px}.items{grid-template-columns:repeat(2,1fr)}.panel{padding:13px}.slots{grid-template-columns:1fr 22px 1fr}.slot{min-height:130px}.slot .emoji{font-size:38px}}
 </style>
 </head>
 <body>
+
 <header>
-<div class="brand">BLACK <i>RUSSIA</i></div>
-<div>👤 ГОСТЬ · ДЕМО</div>
+ <div class="logo">BLACK <span>RUSSIA</span></div>
+ <nav>
+  <a href="#upgrade">АПГРЕЙД</a>
+  <a href="#catalog">КАТАЛОГ</a>
+  <a href="#inventory">ИНВЕНТАРЬ</a>
+ </nav>
+ <div class="balance">🪙 <span id="coins">5000</span> BR</div>
 </header>
+
 <main>
 <section class="hero">
-<div class="red">FAN MADE PROJECT</div>
-<h1>BLACK RUSSIA <span class="red">UPGRADER</span></h1>
-<p>Собирай коллекцию и улучшай предметы</p>
+ <small>FAN MADE PROJECT</small>
+ <h1>BLACK RUSSIA <span class="red">UPGRADER</span></h1>
+ <p>Улучшай предметы. Собирай коллекцию. Поднимай уровень.</p>
 </section>
-<div class="grid">
+
+<div class="layout">
+<div>
+<section class="panel" id="upgrade">
+ <div class="heading">
+  <h2>⚡ МАСТЕРСКАЯ АПГРЕЙДА</h2>
+  <span class="muted">ДЕМО-РЕЖИМ</span>
+ </div>
+ <div class="tabs">
+  <button class="tab active" onclick="filterItems('all',this)">Все</button>
+  <button class="tab" onclick="filterItems('car',this)">Автомобили</button>
+  <button class="tab" onclick="filterItems('other',this)">Предметы</button>
+ </div>
+ <div class="items" id="catalog">
+  <button class="item active" data-type="car" data-name="BMW M5 F90" data-emoji="🚘" data-next="BMW M8 Competition" data-nextemoji="🏎️" data-rarity="epic" data-chance="75">
+   <span class="rarity epic">Эпический</span><span class="emoji">🚘</span><b>BMW M5 F90</b><small>Автомобиль</small>
+  </button>
+  <button class="item" data-type="car" data-name="Mercedes E63" data-emoji="🚙" data-next="Mercedes AMG GT" data-nextemoji="🏁" data-rarity="rare" data-chance="80">
+   <span class="rarity rare">Редкий</span><span class="emoji">🚙</span><b>Mercedes E63</b><small>Автомобиль</small>
+  </button>
+  <button class="item" data-type="car" data-name="Porsche 911" data-emoji="🏎️" data-next="Porsche 918" data-nextemoji="🏎️" data-rarity="legendary" data-chance="55">
+   <span class="rarity legendary">Легендарный</span><span class="emoji">🏎️</span><b>Porsche 911</b><small>Автомобиль</small>
+  </button>
+  <button class="item" data-type="car" data-name="Спортбайк" data-emoji="🏍️" data-next="Супербайк" data-nextemoji="🏍️" data-rarity="rare" data-chance="80">
+   <span class="rarity rare">Редкий</span><span class="emoji">🏍️</span><b>Спортбайк</b><small>Мотоцикл</small>
+  </button>
+  <button class="item" data-type="other" data-name="Золотые часы" data-emoji="⌚" data-next="Премиум-часы" data-nextemoji="✨" data-rarity="rare" data-chance="80">
+   <span class="rarity rare">Редкий</span><span class="emoji">⌚</span><b>Золотые часы</b><small>Аксессуар</small>
+  </button>
+  <button class="item" data-type="other" data-name="Дом у моря" data-emoji="🏡" data-next="Особняк" data-nextemoji="🏰" data-rarity="epic" data-chance="70">
+   <span class="rarity epic">Эпический</span><span class="emoji">🏡</span><b>Дом у моря</b><small>Недвижимость</small>
+  </button>
+  <button class="item" data-type="other" data-name="Вертолёт" data-emoji="🚁" data-next="Бизнес-джет" data-nextemoji="🛩️" data-rarity="legendary" data-chance="55">
+   <span class="rarity legendary">Легендарный</span><span class="emoji">🚁</span><b>Вертолёт</b><small>Транспорт</small>
+  </button>
+  <button class="item" data-type="other" data-name="Катер" data-emoji="🚤" data-next="Яхта" data-nextemoji="🛥️" data-rarity="epic" data-chance="70">
+   <span class="rarity epic">Эпический</span><span class="emoji">🚤</span><b>Катер</b><small>Транспорт</small>
+  </button>
+ </div>
+
+ <div class="stage">
+  <div class="slots">
+   <div class="slot">
+    <span class="emoji" id="fromEmoji">🚘</span>
+    <strong id="fromName">BMW M5 F90</strong>
+    <small>ТЕКУЩИЙ ПРЕДМЕТ</small>
+   </div>
+   <div class="arrow">➜</div>
+   <div class="slot">
+    <span class="emoji" id="toEmoji">🏎️</span>
+    <strong id="toName">BMW M8 Competition</strong>
+    <small>СЛЕДУЮЩИЙ УРОВЕНЬ</small>
+   </div>
+  </div>
+  <div class="chance">
+   <span>Шанс успеха</span>
+   <strong id="chance">75%</strong>
+  </div>
+  <div class="bar"><div id="chanceBar" style="width:75%"></div></div>
+  <button class="upgrade" id="upgradeBtn">УЛУЧШИТЬ ПРЕДМЕТ ➜</button>
+  <div class="cost">Стоимость попытки: 500 BR Coins</div>
+ </div>
+ <div class="disclaimer">Фанатский демонстрационный симулятор. BR Coins — виртуальные очки без денежной стоимости. Нет пополнений, денежных ставок или вывода средств.</div>
+</section>
+
+<section class="panel" id="inventory">
+ <div class="heading"><h2>🎒 МОЙ ИНВЕНТАРЬ</h2><span class="muted" id="itemCount">1 ПРЕДМЕТ</span></div>
+ <div class="inventory" id="inventoryList"></div>
+</section>
+</div>
+
+<aside>
 <section class="panel">
-<h3>ВЫБЕРИ ПРЕДМЕТ</h3>
-<div class="items" id="items">
-<button class="item active" data-name="BMW M5 F90" data-emoji="🚘" data-next="BMW M8" data-nextemoji="🏎️"><span class="pic">🚘</span><b>BMW M5 F90</b></button>
-<button class="item" data-name="Mercedes E63" data-emoji="🚙" data-next="Mercedes AMG GT" data-nextemoji="🏁"><span class="pic">🚙</span><b>Mercedes E63</b></button>
-<button class="item" data-name="Porsche 911" data-emoji="🏎️" data-next="Porsche 918" data-nextemoji="🏎️"><span class="pic">🏎️</span><b>Porsche 911</b></button>
-<button class="item" data-name="Спортбайк" data-emoji="🏍️" data-next="Супербайк" data-nextemoji="🏍️"><span class="pic">🏍️</span><b>Спортбайк</b></button>
-<button class="item" data-name="Золотые часы" data-emoji="⌚" data-next="Премиум часы" data-nextemoji="✨"><span class="pic">⌚</span><b>Золотые часы</b></button>
-<button class="item" data-name="Дом у моря" data-emoji="🏡" data-next="Особняк" data-nextemoji="🏰"><span class="pic">🏡</span><b>Дом у моря</b></button>
-<button class="item" data-name="Вертолёт" data-emoji="🚁" data-next="Бизнес джет" data-nextemoji="🛩️"><span class="pic">🚁</span><b>Вертолёт</b></button>
-<button class="item" data-name="Катер" data-emoji="🚤" data-next="Яхта" data-nextemoji="🛥️"><span class="pic">🚤</span><b>Катер</b></button>
-</div>
-<div class="stage">
-<div class="slots">
-<div class="slot"><span class="pic" id="fromEmoji">🚘</span><b id="fromName">BMW M5 F90</b><small>ТЕКУЩИЙ ПРЕДМЕТ</small></div>
-<div class="arrow">➜</div>
-<div class="slot"><span class="pic" id="toEmoji">🏎️</span><b id="toName">BMW M8</b><small>УЛУЧШЕНИЕ</small></div>
-</div>
-<button class="upgrade" id="upgrade">УЛУЧШИТЬ ПРЕДМЕТ ➜</button>
-</div>
-<div class="notice">Демонстрационный фанатский проект. Без денежных ставок, пополнений и вывода средств.</div>
+ <div class="heading"><h2>👤 ПРОФИЛЬ ИГРОКА</h2></div>
+ <div class="stats">
+  <div class="stat"><span>УРОВЕНЬ</span><strong id="level">1</strong></div>
+  <div class="stat"><span>ОПЫТ</span><strong id="xp">0</strong></div>
+  <div class="stat"><span>АПГРЕЙДЫ</span><strong id="count">0</strong></div>
+  <div class="stat"><span>БАЛАНС</span><strong class="gold" id="sideCoins">5000</strong></div>
+ </div>
+ <div class="side-section">
+  <h3>🏆 ДОСТИЖЕНИЯ</h3>
+  <div class="inventory-row"><span>Первая попытка</span><span id="firstBadge">🔒</span></div>
+  <div class="inventory-row"><span>5 улучшений</span><span id="fiveBadge">🔒</span></div>
+  <div class="inventory-row"><span>10 улучшений</span><span id="tenBadge">🔒</span></div>
+ </div>
+ <div class="side-section">
+  <h3>📜 ИСТОРИЯ</h3>
+  <div id="history"><span class="muted">Пока нет операций</span></div>
+ </div>
+ <div class="side-section">
+  <button class="action" onclick="toggleSound()" id="soundBtn">🔊 Звук: включён</button>
+  <button class="action" onclick="resetGame()">↻ Сбросить прогресс</button>
+ </div>
 </section>
-<aside class="panel">
-<h3>ПРОФИЛЬ ИГРОКА</h3>
-<div class="stat">Уровень<strong id="level">1</strong></div>
-<div class="stat">Улучшений<strong id="count">0</strong></div>
-<div class="stat">Последний предмет<strong id="current">BMW M5 F90</strong></div>
-<h3>ИСТОРИЯ</h3>
-<div class="history" id="history">Пока пусто</div>
 </aside>
 </div>
 </main>
+
+<footer>BLACK RUSSIA UPGRADER · FAN-MADE PROJECT · НЕОФИЦИАЛЬНЫЙ СИМУЛЯТОР</footer>
+
+<div class="overlay" id="overlay">
+ <div class="result" id="result">
+  <div class="emoji" id="resultEmoji">✨</div>
+  <h2 id="resultTitle">УЛУЧШЕНИЕ!</h2>
+  <p id="resultText"></p>
+  <button onclick="closeResult()">ПРОДОЛЖИТЬ</button>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+
 <script>
-const items=[...document.querySelectorAll('.item')];
-let selected=items[0],count=0;
-function update(){
- document.getElementById('fromEmoji').textContent=selected.dataset.emoji;
- document.getElementById('fromName').textContent=selected.dataset.name;
- document.getElementById('toEmoji').textContent=selected.dataset.nextemoji;
- document.getElementById('toName').textContent=selected.dataset.next;
- document.getElementById('current').textContent=selected.dataset.name;
+const $=id=>document.getElementById(id);
+const START=5000,COST=500;
+let coins=START,count=0,xp=0,level=1,sound=true;
+let selected=document.querySelector('.item.active');
+let inventory={'BMW M5 F90':{emoji:'🚘',qty:1}};
+let history=[];
+let busy=false;
+
+function save(){
+ localStorage.setItem('brUpgraderSave',JSON.stringify({coins,count,xp,level,inventory,history}));
 }
-items.forEach(item=>item.onclick=()=>{
- selected.classList.remove('active');
- selected=item;
- selected.classList.add('active');
- update();
+function load(){
+ try{
+  const s=JSON.parse(localStorage.getItem('brUpgraderSave'));
+  if(!s)return;
+  coins=s.coins??START;count=s.count??0;xp=s.xp??0;level=s.level??1;
+  inventory=s.inventory??inventory;history=s.history??[];
+ }catch(e){}
+}
+function notify(message){
+ const t=$('toast');t.textContent=message;t.classList.add('show');
+ setTimeout(()=>t.classList.remove('show'),2000);
+}
+function playSound(freq=500){
+ if(!sound)return;
+ try{
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctx.createOscillator(),gain=ctx.createGain();
+  osc.connect(gain);gain.connect(ctx.destination);
+  osc.frequency.value=freq;gain.gain.value=.04;
+  osc.start();gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.16);
+  osc.stop(ctx.currentTime+.16);
+ }catch(e){}
+}
+function updateSlot(){
+ $('fromEmoji').textContent=selected.dataset.emoji;
+ $('fromName').textContent=selected.dataset.name;
+ $('toEmoji').textContent=selected.dataset.nextemoji;
+ $('toName').textContent=selected.dataset.next;
+ $('chance').textContent=selected.dataset.chance+'%';
+ $('chanceBar').style.width=selected.dataset.chance+'%';
+}
+function selectItem(item){
+ if(busy)return;
+ selected.classList.remove('active');selected=item;selected.classList.add('active');
+ updateSlot();
+}
+document.querySelectorAll('.item').forEach(item=>{
+ item.addEventListener('click',()=>selectItem(item));
 });
-document.getElementById('upgrade').onclick=()=>{
- const old=selected.dataset.name;
- const next=selected.dataset.next;
- count++;
- document.getElementById('count').textContent=count;
- document.getElementById('level').textContent=Math.floor(count/3)+1;
- const history=document.getElementById('history');
- if(count===1)history.innerHTML='';
- const row=document.createElement('div');
- row.textContent=old+' → '+next+' ✓';
- history.prepend(row);
- selected.dataset.name=next;
- selected.dataset.emoji=selected.dataset.nextemoji;
- selected.dataset.next=next+' II';
- selected.dataset.nextemoji='🌟';
- update();
-};
+function filterItems(type,btn){
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');
+ document.querySelectorAll('.item').forEach(item=>{
+  item.style.display=type==='all'||item.dataset.type===type?'block':'none';
+ });
+}
+function addInventory(name,emoji){
+ if(!inventory[name])inventory[name]={emoji,qty:0};
+ inventory[name].qty++;
+}
+function renderInventory(){
+ const box=$('inventoryList');box.replaceChildren();
+ let total=0;
+ Object.entries(inventory).forEach(([name,item])=>{
+  if(item.qty<=0)return;
+  total+=item.qty;
+  const row=document.createElement('div');row.className='inventory-row';
+  const left=document.createElement('span');left.textContent=item.emoji+' '+name;
+  const right=document.createElement('b');right.textContent='×'+item.qty;
+  row.append(left,right);box.append(row);
+ });
+ $('itemCount').textContent=total+' ПРЕДМЕТОВ';
+}
+function renderHistory(){
+ const box=$('history');box.replaceChildren();
+ if(!history.length){box.innerHTML='<span class="muted">Пока нет операций</span>';return;}
+ history.slice(0,8).forEach(h=>{
+  const row=document.createElement('div');row.className='history-row';
+  const a=document.createElement('span');a.textContent=h.text;
+  const b=document.createElement('b');b.className=h.win?'good':'bad';b.textContent=h.win?'УСПЕХ':'НЕУДАЧА';
+  row.append(a,b);box.append(row);
+ });
+}
+function render(){
+ $('coins').textContent=coins.toLocaleString('ru-RU');
+ $('sideCoins').textContent=coins.toLocaleString('ru-RU');
+ $('count').textContent=count;$('xp').textContent=xp;$('level').textContent=level;
+ $('firstBadge').textContent=count>=1?'🏆':'🔒';
+ $('fiveBadge').textContent=count>=5?'🏆':'🔒';
+ $('tenBadge').textContent=count>=10?'🏆':'🔒';
+ renderInventory();renderHistory();save();
+}
+function showResult(win,old,next){
+ const box=$('result');box.className='result '+(win?'win':'lose');
+ $('resultEmoji').textContent=win?'🎉':'💥';
+ $('resultTitle').textContent=win?'АПГРЕЙД УДАЛСЯ!':'НЕУДАЧА!';
+ $('resultText').textContent=win?'Поздравляем! Получен предмет: '+next:'Попытка не удалась. Предмет '+old+' сохранён.';
+ $('overlay').classList.add('show');
+}
+function closeResult(){$('overlay').classList.remove('show');}
+$('upgradeBtn').addEventListener('click',()=>{
+ if(busy)return;
+ if(coins<COST){notify('Недостаточно BR Coins!');return;}
+ busy=true;$('upgradeBtn').disabled=true;
+ const old=selected.dataset.name,next=selected.dataset.next;
+ const oldEmoji=selected.dataset.emoji,nextEmoji=selected.dataset.nextemoji;
+ const chance=Number(selected.dataset.chance);
+ coins-=COST;
+ $('fromEmoji').classList.add('rolling');
+ $('toEmoji').classList.add('rolling');
+ playSound(350);
+ setTimeout(()=>{
+  $('fromEmoji').classList.remove('rolling');
+  $('toEmoji').classList.remove('rolling');
+  const win=Math.random()*100<chance;
+  count++;xp+=win?100:25;
+  level=Math.floor(xp/500)+1;
+  if(win){
+   if(inventory[old]&&inventory[old].qty>0)inventory[old].qty--;
+   addInventory(next,nextEmoji);
+   selected.dataset.name=next;
+   selected.dataset.emoji=nextEmoji;
+   selected.dataset.next=next+' II';
+   selected.dataset.nextemoji='🌟';
+   selected.dataset.chance=Math.max(35,chance-10);
+   playSound(850);
+  }else{
+   if(!inventory[old])inventory[old]={emoji:oldEmoji,qty:1};
+   playSound(180);
+  }
+  history.unshift({text:old+' → '+next,win});
+  updateSlot();render();showResult(win,old,next);
+  busy=false;$('upgradeBtn').disabled=false;
+ },1300);
+});
+function toggleSound(){
+ sound=!sound;
+ $('soundBtn').textContent=sound?'🔊 Звук: включён':'🔇 Звук: выключен';
+}
+function resetGame(){
+ if(!confirm('Точно сбросить весь прогресс?'))return;
+ localStorage.removeItem('brUpgraderSave');
+ coins=START;count=0;xp=0;level=1;history=[];
+ inventory={'BMW M5 F90':{emoji:'🚘',qty:1}};
+ selected=document.querySelector('.item');
+ document.querySelectorAll('.item').forEach(x=>x.classList.remove('active'));
+ selected.classList.add('active');
+ selected.dataset.name='BMW M5 F90';
+ selected.dataset.emoji='🚘';
+ selected.dataset.next='BMW M8 Competition';
+ selected.dataset.nextemoji='🏎️';
+ selected.dataset.chance='75';
+ updateSlot();render();notify('Прогресс сброшен');
+}
+load();updateSlot();render();
 </script>
 </body>
 </html>
