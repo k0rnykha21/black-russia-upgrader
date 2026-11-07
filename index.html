@@ -4,376 +4,306 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BLACK RUSSIA UPGRADER</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BLACK RUSSIA — UPGRADE</title>
 <style>
-:root{
- --bg:#080a10;--panel:#131923;--panel2:#0d121b;
- --red:#ed3045;--gold:#ffc75e;--text:#f4f5fa;
- --muted:#8d98aa;--line:#293345;--green:#39d69b;
-}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#32101b,transparent 48%),var(--bg);color:var(--text);font:14px Arial,sans-serif}
-header{height:72px;background:#0b0e15ed;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(4%,20px);position:sticky;top:0;z-index:5}
-.logo{font-size:21px;font-weight:1000;letter-spacing:1px}
-.logo span,.red{color:var(--red)}
-nav{display:flex;gap:22px}
-nav a{color:#b1bac9;text-decoration:none;font-size:12px}
-nav a:hover{color:white}
-.balance{background:#1d1b17;border:1px solid #69522b;color:var(--gold);padding:10px 14px;border-radius:9px;font-weight:bold}
-main{max-width:1200px;margin:auto;padding:28px 18px 60px}
-.hero{text-align:center;padding:20px 0 28px}
-.hero small{color:#ff7180;letter-spacing:3px;font-weight:bold}
-.hero h1{font-size:clamp(30px,5vw,48px);margin:12px 0}
-.hero p{color:var(--muted)}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:17px}
-.panel{background:linear-gradient(145deg,#171e2a,#10151e);border:1px solid var(--line);border-radius:14px;padding:19px;margin-bottom:16px}
-.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.heading h2{font-size:14px;margin:0}
-.muted{color:var(--muted);font-size:10px}
-.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
-.tab{background:#0c1119;color:#aeb7c6;border:1px solid var(--line);border-radius:8px;padding:10px 15px;cursor:pointer}
-.tab.active{background:#37131c;border-color:var(--red);color:white}
-.items{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.item{position:relative;background:#0b1018;border:1px solid var(--line);border-radius:11px;padding:13px 5px;color:white;cursor:pointer;text-align:center;min-width:0}
-.item:hover{border-color:#86505a}
-.item.active{border-color:var(--red);background:#29131b}
-.item .emoji{font-size:37px;display:block;margin:8px 0 13px}
-.item b{font-size:11px;display:block}
-.item small{font-size:9px;color:var(--muted);display:block;margin-top:6px}
-.rarity{font-size:8px;letter-spacing:1px;text-transform:uppercase}
-.common{color:#aeb8c7}.rare{color:#54a9ff}.epic{color:#be83ff}.legendary{color:var(--gold)}
-.stage{margin-top:18px;background:#0a0f17;border:1px solid #303b4d;border-radius:12px;padding:16px}
-.slots{display:grid;grid-template-columns:1fr 35px 1fr;gap:9px;align-items:center}
-.slot{min-height:150px;background:#111722;border:1px dashed #4a566a;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px}
-.slot .emoji{font-size:49px}
-.slot strong{font-size:12px;margin-top:8px}
-.slot small{font-size:9px;color:var(--muted);margin-top:5px}
-.arrow{font-size:25px;color:var(--red);text-align:center}
-.chance{display:flex;justify-content:space-between;margin-top:16px;font-size:11px;color:var(--muted)}
-.bar{height:7px;background:#252e3d;border-radius:8px;overflow:hidden;margin-top:8px}
-.bar div{height:100%;background:linear-gradient(90deg,#a9162b,#ff596a);transition:width .3s}
-.upgrade{width:100%;padding:16px;margin-top:15px;background:linear-gradient(100deg,#b41930,#f13c50);border:0;border-radius:9px;color:white;font-weight:900;letter-spacing:1px;cursor:pointer}
-.upgrade:hover{filter:brightness(1.15)}
-.upgrade:disabled{opacity:.5;cursor:default}
-.cost{text-align:center;font-size:10px;color:var(--gold);margin-top:9px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:#0c1119;border:1px solid var(--line);padding:13px;border-radius:10px}
-.stat span{font-size:10px;color:var(--muted)}
-.stat strong{display:block;font-size:21px;margin-top:7px}
-.stat strong.gold{color:var(--gold)}
-.side-section{margin-top:20px}
-.side-section h3{font-size:12px;margin-bottom:12px}
-.history-row,.inventory-row{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:11px}
-.history-row:last-child,.inventory-row:last-child{border:0}
-.good{color:var(--green)}.bad{color:#ff6474}
-.inventory{max-height:210px;overflow:auto}
-.action{background:#222b39;color:white;border:1px solid #394558;padding:8px 12px;border-radius:7px;cursor:pointer;font-size:10px}
-.action:hover{border-color:var(--red)}
-.disclaimer{font-size:10px;line-height:1.5;color:var(--muted);margin-top:16px}
-footer{text-align:center;color:#667183;font-size:10px;padding:25px}
-.overlay{position:fixed;inset:0;background:#05070beF;z-index:10;display:none;align-items:center;justify-content:center;padding:20px}
-.overlay.show{display:flex}
-.result{background:#171e2a;border:1px solid #46536a;border-radius:16px;padding:35px;text-align:center;width:min(390px,100%);box-shadow:0 20px 100px #000}
-.result .emoji{font-size:75px}
-.result h2{font-size:25px}
-.result button{margin-top:18px;width:100%;padding:13px;border:0;border-radius:8px;background:var(--red);color:white;font-weight:bold;cursor:pointer}
-.result.win h2{color:var(--green)}
-.result.lose h2{color:#ff6879}
-.rolling{animation:roll .65s ease-in-out infinite alternate}
-@keyframes roll{from{transform:translateY(-5px) scale(.95);filter:blur(1px)}to{transform:translateY(5px) scale(1.08);filter:blur(0)}}
-.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;background:#202a39;padding:12px 18px;border-radius:9px;z-index:20;transition:.2s}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:850px){.layout{grid-template-columns:1fr}nav{display:none}}
-@media(max-width:500px){header{padding:0 12px}.items{grid-template-columns:repeat(2,1fr)}.panel{padding:13px}.slots{grid-template-columns:1fr 22px 1fr}.slot{min-height:130px}.slot .emoji{font-size:38px}}
+:root{--yellow:#ffdc00;--bg:#101011;--panel:#1c1c1f;--muted:#88888d;--line:#303034}
+body{margin:0;background:var(--bg);color:white;font:14px Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+.top{height:55px;background:#19191c;display:flex;align-items:center;padding:0 18px;gap:25px;border-bottom:1px solid #29292d;position:sticky;top:0;z-index:5}
+.logo{font-size:23px;font-weight:1000;letter-spacing:-1px}
+.logo span{color:var(--yellow)}
+.topstat{font-size:11px;color:#aaa}
+.topstat b{display:block;color:white;font-size:14px;margin-top:4px}
+.topnav{display:flex;gap:25px;margin-left:35px;font-weight:bold;font-size:12px}
+.topnav a{color:#888;text-decoration:none}
+.topnav a.active{color:var(--yellow)}
+.spacer{flex:1}
+.login{background:var(--yellow);border:0;border-radius:8px;padding:12px 20px;font-weight:bold}
+.layout{display:grid;grid-template-columns:126px minmax(0,1fr);min-height:calc(100vh - 55px)}
+.sidebar{background:#171719;padding:6px 5px;overflow:hidden;border-right:1px solid #252529}
+.sideitem{height:80px;background:#242428;border-radius:9px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;font-size:31px;border:1px solid #303034;cursor:pointer;position:relative}
+.sideitem small{font-size:9px;color:#bbb}
+.sideitem.active{background:linear-gradient(135deg,#615000,#282317);border-color:#a68c00}
+.sideitem.active:after{content:"";position:absolute;right:8px;top:12px;border-top:18px solid transparent;border-bottom:18px solid transparent;border-right:18px solid var(--yellow)}
+.content{min-width:0;padding:20px 18px 35px;max-width:1600px;margin:auto;width:100%}
+.brandline{text-align:center;font-size:22px;font-weight:1000;margin:10px 0 35px;letter-spacing:1px}
+.brandline span{color:var(--yellow);font-size:34px;vertical-align:middle;margin-right:8px}
+.settings{display:flex;gap:9px;color:#aaa;margin-bottom:12px}
+.settings button{background:none;color:inherit;border:0;font-size:17px}
+.upgrade-area{display:grid;grid-template-columns:minmax(180px,1fr) minmax(250px,1.05fr) minmax(180px,1fr);gap:14px;align-items:center}
+.pick{height:275px;border-radius:13px;background:radial-gradient(ellipse at center,#27251a,#19191c 70%);border:1px solid #252529;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:15px;position:relative;overflow:hidden}
+.pick h3{font-size:13px;line-height:1.4;margin:0 0 15px}
+.pick .big{font-size:75px;filter:drop-shadow(0 8px 10px #000);margin:15px 0}
+.pick p{font-size:11px;color:#999}
+.pick strong{font-size:14px}
+.pick .hint{font-size:10px;color:#aaa;margin-top:8px}
+.gauge-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column}
+.gauge{width:min(100%,320px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;background:conic-gradient(from 220deg,var(--yellow) 0deg,#ff9b00 125deg,#262629 126deg 280deg,var(--yellow) 281deg 360deg);padding:15px;box-shadow:0 0 30px #ffca001c}
+.gauge:before{content:"";position:absolute;inset:12px;border-radius:50%;background:#1c1c1f;border:12px solid #29292c}
+.gauge:after{content:"";position:absolute;inset:43px;border-radius:50%;border:1px dashed #555}
+.gauge-inner{z-index:1;width:75%;height:75%;border-radius:50%;background:radial-gradient(circle,#28282a,#19191b);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.arrows{font-size:76px;line-height:.65;color:var(--yellow);text-shadow:0 7px #806900;transition:.3s}
+.gauge-label{font-size:10px;color:#aaa;margin-top:24px;letter-spacing:2px}
+.gauge.working .arrows{animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gauge-caption{color:#aaa;font-size:11px;margin-top:13px}
+.upgradebtn{margin-top:24px;width:min(310px,100%);height:57px;border:0;border-radius:13px;background:var(--yellow);color:#171717;font-size:17px;font-weight:900;box-shadow:0 5px 0 #9d8500}
+.upgradebtn:disabled{opacity:.5;cursor:not-allowed}
+.lower{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:23px}
+.box{background:var(--panel);border-radius:12px;overflow:hidden;min-width:0;border:1px solid #242428}
+.boxhead{height:61px;padding:0 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #29292d;font-size:15px}
+.boxhead b{color:var(--yellow);font-size:19px}
+.miniicon{background:#29292d;border-radius:9px;padding:9px}
+.miniicon.active{background:var(--yellow);color:#151515}
+.boxbody{padding:12px}
+.filters{display:flex;gap:6px;margin-bottom:12px}
+.filters input{min-width:0;width:100%;background:#17171a;border:1px solid #39393d;border-radius:9px;padding:11px;color:white;outline:none}
+.filters select{width:95px;background:#17171a;color:white;border:1px solid #39393d;border-radius:9px;padding:8px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;max-height:250px;overflow:auto}
+.card{background:#252529;border:1px solid #39393e;border-radius:8px;min-width:0;padding:8px 5px;text-align:center;color:white}
+.card:hover,.card.selected{border-color:var(--yellow);background:#38321a}
+.card .emoji{font-size:34px;display:block;margin:7px}
+.card strong{font-size:10px;display:block;overflow-wrap:anywhere}
+.card small{font-size:9px;color:#b3b3b3;display:block;margin-top:5px}
+.price{color:var(--yellow)!important}
+.empty{padding:35px 10px;text-align:center;color:#aaa;line-height:1.7}
+.profile{display:flex;justify-content:space-between;gap:10px;margin-top:15px;flex-wrap:wrap}
+.pill{background:#252529;padding:9px 12px;border-radius:8px;color:#ccc;font-size:11px}
+.pill b{color:var(--yellow)}
+.notice{text-align:center;color:#666;font-size:10px;margin:22px 0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#292929;border:1px solid #555;padding:13px 20px;border-radius:9px;display:none;z-index:10}
+@media(max-width:900px){.upgrade-area{grid-template-columns:1fr 1fr}.gauge-wrap{grid-column:1/-1;grid-row:1}.pick{height:210px}.lower{grid-template-columns:1fr}}
+@media(max-width:560px){.top{gap:10px;padding:0 9px}.logo{font-size:17px}.topstat{display:none}.topnav{margin:0;gap:12px;font-size:10px}.login{padding:10px}.layout{grid-template-columns:57px minmax(0,1fr)}.sideitem{height:58px;font-size:23px}.sideitem small{font-size:7px}.content{padding:12px 8px}.brandline{margin:8px 0 20px;font-size:17px}.brandline span{font-size:25px}.upgrade-area{gap:7px}.pick{height:170px;padding:7px}.pick h3{font-size:10px}.pick .big{font-size:47px}.gauge{width:230px}.arrows{font-size:60px}.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.boxhead{font-size:13px}}
 </style>
 </head>
 <body>
-
-<header>
+<header class="top">
  <div class="logo">BLACK <span>RUSSIA</span></div>
- <nav>
-  <a href="#upgrade">АПГРЕЙД</a>
-  <a href="#catalog">КАТАЛОГ</a>
-  <a href="#inventory">ИНВЕНТАРЬ</a>
- </nav>
- <div class="balance">🪙 <span id="coins">5000</span> BR</div>
+ <div class="topstat">ОНЛАЙН<b>👥 2 309</b></div>
+ <div class="topstat">АПГРЕЙДОВ<b>⌃ 604 328 034</b></div>
+ <nav class="topnav"><a href="#">BATTLE</a><a class="active" href="#">UPGRADE</a></nav>
+ <div class="spacer"></div>
+ <button class="login" onclick="notify('Это демонстрационный режим без авторизации')">Войти</button>
 </header>
 
-<main>
-<section class="hero">
- <small>FAN MADE PROJECT</small>
- <h1>BLACK RUSSIA <span class="red">UPGRADER</span></h1>
- <p>Улучшай предметы. Собирай коллекцию. Поднимай уровень.</p>
-</section>
-
 <div class="layout">
-<div>
-<section class="panel" id="upgrade">
- <div class="heading">
-  <h2>⚡ МАСТЕРСКАЯ АПГРЕЙДА</h2>
-  <span class="muted">ДЕМО-РЕЖИМ</span>
- </div>
- <div class="tabs">
-  <button class="tab active" onclick="filterItems('all',this)">Все</button>
-  <button class="tab" onclick="filterItems('car',this)">Автомобили</button>
-  <button class="tab" onclick="filterItems('other',this)">Предметы</button>
- </div>
- <div class="items" id="catalog">
-  <button class="item active" data-type="car" data-name="BMW M5 F90" data-emoji="🚘" data-next="BMW M8 Competition" data-nextemoji="🏎️" data-rarity="epic" data-chance="75">
-   <span class="rarity epic">Эпический</span><span class="emoji">🚘</span><b>BMW M5 F90</b><small>Автомобиль</small>
-  </button>
-  <button class="item" data-type="car" data-name="Mercedes E63" data-emoji="🚙" data-next="Mercedes AMG GT" data-nextemoji="🏁" data-rarity="rare" data-chance="80">
-   <span class="rarity rare">Редкий</span><span class="emoji">🚙</span><b>Mercedes E63</b><small>Автомобиль</small>
-  </button>
-  <button class="item" data-type="car" data-name="Porsche 911" data-emoji="🏎️" data-next="Porsche 918" data-nextemoji="🏎️" data-rarity="legendary" data-chance="55">
-   <span class="rarity legendary">Легендарный</span><span class="emoji">🏎️</span><b>Porsche 911</b><small>Автомобиль</small>
-  </button>
-  <button class="item" data-type="car" data-name="Спортбайк" data-emoji="🏍️" data-next="Супербайк" data-nextemoji="🏍️" data-rarity="rare" data-chance="80">
-   <span class="rarity rare">Редкий</span><span class="emoji">🏍️</span><b>Спортбайк</b><small>Мотоцикл</small>
-  </button>
-  <button class="item" data-type="other" data-name="Золотые часы" data-emoji="⌚" data-next="Премиум-часы" data-nextemoji="✨" data-rarity="rare" data-chance="80">
-   <span class="rarity rare">Редкий</span><span class="emoji">⌚</span><b>Золотые часы</b><small>Аксессуар</small>
-  </button>
-  <button class="item" data-type="other" data-name="Дом у моря" data-emoji="🏡" data-next="Особняк" data-nextemoji="🏰" data-rarity="epic" data-chance="70">
-   <span class="rarity epic">Эпический</span><span class="emoji">🏡</span><b>Дом у моря</b><small>Недвижимость</small>
-  </button>
-  <button class="item" data-type="other" data-name="Вертолёт" data-emoji="🚁" data-next="Бизнес-джет" data-nextemoji="🛩️" data-rarity="legendary" data-chance="55">
-   <span class="rarity legendary">Легендарный</span><span class="emoji">🚁</span><b>Вертолёт</b><small>Транспорт</small>
-  </button>
-  <button class="item" data-type="other" data-name="Катер" data-emoji="🚤" data-next="Яхта" data-nextemoji="🛥️" data-rarity="epic" data-chance="70">
-   <span class="rarity epic">Эпический</span><span class="emoji">🚤</span><b>Катер</b><small>Транспорт</small>
-  </button>
- </div>
-
- <div class="stage">
-  <div class="slots">
-   <div class="slot">
-    <span class="emoji" id="fromEmoji">🚘</span>
-    <strong id="fromName">BMW M5 F90</strong>
-    <small>ТЕКУЩИЙ ПРЕДМЕТ</small>
-   </div>
-   <div class="arrow">➜</div>
-   <div class="slot">
-    <span class="emoji" id="toEmoji">🏎️</span>
-    <strong id="toName">BMW M8 Competition</strong>
-    <small>СЛЕДУЮЩИЙ УРОВЕНЬ</small>
-   </div>
-  </div>
-  <div class="chance">
-   <span>Шанс успеха</span>
-   <strong id="chance">75%</strong>
-  </div>
-  <div class="bar"><div id="chanceBar" style="width:75%"></div></div>
-  <button class="upgrade" id="upgradeBtn">УЛУЧШИТЬ ПРЕДМЕТ ➜</button>
-  <div class="cost">Стоимость попытки: 500 BR Coins</div>
- </div>
- <div class="disclaimer">Фанатский демонстрационный симулятор. BR Coins — виртуальные очки без денежной стоимости. Нет пополнений, денежных ставок или вывода средств.</div>
-</section>
-
-<section class="panel" id="inventory">
- <div class="heading"><h2>🎒 МОЙ ИНВЕНТАРЬ</h2><span class="muted" id="itemCount">1 ПРЕДМЕТ</span></div>
- <div class="inventory" id="inventoryList"></div>
-</section>
-</div>
-
-<aside>
-<section class="panel">
- <div class="heading"><h2>👤 ПРОФИЛЬ ИГРОКА</h2></div>
- <div class="stats">
-  <div class="stat"><span>УРОВЕНЬ</span><strong id="level">1</strong></div>
-  <div class="stat"><span>ОПЫТ</span><strong id="xp">0</strong></div>
-  <div class="stat"><span>АПГРЕЙДЫ</span><strong id="count">0</strong></div>
-  <div class="stat"><span>БАЛАНС</span><strong class="gold" id="sideCoins">5000</strong></div>
- </div>
- <div class="side-section">
-  <h3>🏆 ДОСТИЖЕНИЯ</h3>
-  <div class="inventory-row"><span>Первая попытка</span><span id="firstBadge">🔒</span></div>
-  <div class="inventory-row"><span>5 улучшений</span><span id="fiveBadge">🔒</span></div>
-  <div class="inventory-row"><span>10 улучшений</span><span id="tenBadge">🔒</span></div>
- </div>
- <div class="side-section">
-  <h3>📜 ИСТОРИЯ</h3>
-  <div id="history"><span class="muted">Пока нет операций</span></div>
- </div>
- <div class="side-section">
-  <button class="action" onclick="toggleSound()" id="soundBtn">🔊 Звук: включён</button>
-  <button class="action" onclick="resetGame()">↻ Сбросить прогресс</button>
- </div>
-</section>
+<aside class="sidebar">
+ <div class="sideitem active" onclick="category('all',this)">🚘<small>ВСЁ</small></div>
+ <div class="sideitem" onclick="category('car',this)">🏎️<small>АВТО</small></div>
+ <div class="sideitem" onclick="category('moto',this)">🏍️<small>МОТО</small></div>
+ <div class="sideitem" onclick="category('house',this)">🏠<small>ДОМ</small></div>
+ <div class="sideitem" onclick="category('other',this)">⌚<small>ПРЕДМЕТЫ</small></div>
 </aside>
-</div>
-</main>
 
-<footer>BLACK RUSSIA UPGRADER · FAN-MADE PROJECT · НЕОФИЦИАЛЬНЫЙ СИМУЛЯТОР</footer>
-
-<div class="overlay" id="overlay">
- <div class="result" id="result">
-  <div class="emoji" id="resultEmoji">✨</div>
-  <h2 id="resultTitle">УЛУЧШЕНИЕ!</h2>
-  <p id="resultText"></p>
-  <button onclick="closeResult()">ПРОДОЛЖИТЬ</button>
+<main class="content">
+ <div class="brandline"><span>⌃</span> BLACK RUSSIA UPGRADE</div>
+ <div class="settings">
+  <button onclick="notify('Настройки демонстрационного проекта')">⚙</button>
+  <button id="sound" onclick="toggleSound()">🔊</button>
+  <button onclick="notify('Анимация включена')">ϟ</button>
  </div>
+
+ <section class="upgrade-area">
+  <div class="pick">
+   <h3>Выберите предмет для использования</h3>
+   <div class="big" id="sourceEmoji">🚘</div>
+   <strong id="sourceName">BMW M5 F90</strong>
+   <p id="sourceInfo">Ваш предмет</p>
+  </div>
+
+  <div class="gauge-wrap">
+   <div class="gauge" id="gauge">
+    <div class="gauge-inner">
+     <div class="arrows">⌃<br>⌃</div>
+     <div class="gauge-label">UPGRADE</div>
+    </div>
+   </div>
+   <div class="gauge-caption" id="gaugeCaption">Выберите предметы для улучшения</div>
+   <button class="upgradebtn" id="upgradeBtn" onclick="upgrade()">⌃ УЛУЧШИТЬ</button>
+  </div>
+
+  <div class="pick">
+   <h3>Выберите предмет для апгрейда</h3>
+   <div class="big" id="targetEmoji">🏎️</div>
+   <strong id="targetName">BMW M8 Competition</strong>
+   <p id="targetInfo">Цель улучшения</p>
+  </div>
+ </section>
+
+ <div class="lower">
+  <section class="box">
+   <div class="boxhead"><span class="miniicon active">🚘</span><span class="miniicon">▦</span> Мой инвентарь</div>
+   <div class="boxbody">
+    <div class="profile">
+     <span class="pill">🪙 Баланс: <b id="balance">5 000</b></span>
+     <span class="pill">Предметов: <b id="inventoryCount">3</b></span>
+    </div>
+    <div class="cards" id="inventory"></div>
+   </div>
+  </section>
+
+  <section class="box">
+   <div class="boxhead"><b>⌃</b> Прокачать до</div>
+   <div class="boxbody">
+    <div class="filters">
+     <input id="search" placeholder="Поиск предмета..." oninput="renderTargets()">
+     <select id="sort" onchange="renderTargets()"><option value="all">Все</option><option value="car">Авто</option><option value="moto">Мото</option><option value="house">Дома</option><option value="other">Другое</option></select>
+    </div>
+    <div class="cards" id="targets"></div>
+   </div>
+  </section>
+ </div>
+
+ <div class="profile">
+  <span class="pill">Уровень: <b id="level">1</b></span>
+  <span class="pill">Успешных улучшений: <b id="upgrades">0</b></span>
+  <span class="pill">Стоимость: <b>500 BR</b></span>
+ </div>
+ <div class="notice">ФАНАТСКИЙ ДЕМО-ПРОЕКТ BLACK RUSSIA. Неофициальный сайт. Виртуальные очки не имеют денежной стоимости.</div>
+</main>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-const $=id=>document.getElementById(id);
-const START=5000,COST=500;
-let coins=START,count=0,xp=0,level=1,sound=true;
-let selected=document.querySelector('.item.active');
-let inventory={'BMW M5 F90':{emoji:'🚘',qty:1}};
-let history=[];
-let busy=false;
+const catalog=[
+ {id:1,name:'BMW M5 F90',emoji:'🚘',type:'car',price:1000},
+ {id:2,name:'BMW M8 Competition',emoji:'🏎️',type:'car',price:2500},
+ {id:3,name:'Mercedes E63',emoji:'🚙',type:'car',price:1200},
+ {id:4,name:'Mercedes AMG GT',emoji:'🏁',type:'car',price:2800},
+ {id:5,name:'Porsche 911',emoji:'🏎️',type:'car',price:3000},
+ {id:6,name:'Porsche 918',emoji:'🏎️',type:'car',price:5000},
+ {id:7,name:'Спортбайк',emoji:'🏍️',type:'moto',price:900},
+ {id:8,name:'Супербайк',emoji:'🏍️',type:'moto',price:2300},
+ {id:9,name:'Дом у моря',emoji:'🏡',type:'house',price:4000},
+ {id:10,name:'Особняк',emoji:'🏰',type:'house',price:9000},
+ {id:11,name:'Золотые часы',emoji:'⌚',type:'other',price:700},
+ {id:12,name:'Премиум часы',emoji:'✨',type:'other',price:1800},
+ {id:13,name:'Вертолёт',emoji:'🚁',type:'other',price:3500},
+ {id:14,name:'Бизнес-джет',emoji:'🛩️',type:'other',price:8000},
+ {id:15,name:'Катер',emoji:'🚤',type:'other',price:1500},
+ {id:16,name:'Яхта',emoji:'🛥️',type:'other',price:4500}
+];
+let state={coins:5000,upgrades:0,level:1,inventory:[1,3,7],source:1,target:2};
+let sound=true,busy=false,sideFilter='all';
 
-function save(){
- localStorage.setItem('brUpgraderSave',JSON.stringify({coins,count,xp,level,inventory,history}));
-}
+function save(){localStorage.setItem('blackRussiaUpgrade',JSON.stringify(state))}
 function load(){
  try{
-  const s=JSON.parse(localStorage.getItem('brUpgraderSave'));
-  if(!s)return;
-  coins=s.coins??START;count=s.count??0;xp=s.xp??0;level=s.level??1;
-  inventory=s.inventory??inventory;history=s.history??[];
+  let old=JSON.parse(localStorage.getItem('blackRussiaUpgrade'));
+  if(old&&Array.isArray(old.inventory))state={...state,...old};
  }catch(e){}
 }
-function notify(message){
- const t=$('toast');t.textContent=message;t.classList.add('show');
- setTimeout(()=>t.classList.remove('show'),2000);
-}
-function playSound(freq=500){
+function item(id){return catalog.find(x=>x.id===Number(id))}
+function notify(t){let el=document.getElementById('toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',2200)}
+function toggleSound(){sound=!sound;document.getElementById('sound').textContent=sound?'🔊':'🔇'}
+function beep(freq=500){
  if(!sound)return;
- try{
-  const ctx=new (window.AudioContext||window.webkitAudioContext)();
-  const osc=ctx.createOscillator(),gain=ctx.createGain();
-  osc.connect(gain);gain.connect(ctx.destination);
-  osc.frequency.value=freq;gain.gain.value=.04;
-  osc.start();gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.16);
-  osc.stop(ctx.currentTime+.16);
- }catch(e){}
+ try{let c=new AudioContext(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=freq;g.gain.value=.04;o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.2);o.stop(c.currentTime+.2)}catch(e){}
 }
-function updateSlot(){
- $('fromEmoji').textContent=selected.dataset.emoji;
- $('fromName').textContent=selected.dataset.name;
- $('toEmoji').textContent=selected.dataset.nextemoji;
- $('toName').textContent=selected.dataset.next;
- $('chance').textContent=selected.dataset.chance+'%';
- $('chanceBar').style.width=selected.dataset.chance+'%';
-}
-function selectItem(item){
+function selectSource(id){
  if(busy)return;
- selected.classList.remove('active');selected=item;selected.classList.add('active');
- updateSlot();
+ state.source=id;
+ let x=item(id);
+ document.getElementById('sourceEmoji').textContent=x.emoji;
+ document.getElementById('sourceName').textContent=x.name;
+ document.getElementById('sourceInfo').textContent='Выбранный предмет';
+ renderInventory();save();
 }
-document.querySelectorAll('.item').forEach(item=>{
- item.addEventListener('click',()=>selectItem(item));
-});
-function filterItems(type,btn){
- document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
- btn.classList.add('active');
- document.querySelectorAll('.item').forEach(item=>{
-  item.style.display=type==='all'||item.dataset.type===type?'block':'none';
- });
-}
-function addInventory(name,emoji){
- if(!inventory[name])inventory[name]={emoji,qty:0};
- inventory[name].qty++;
+function selectTarget(id){
+ if(busy)return;
+ state.target=id;
+ let x=item(id);
+ document.getElementById('targetEmoji').textContent=x.emoji;
+ document.getElementById('targetName').textContent=x.name;
+ document.getElementById('targetInfo').textContent='Стоимость: '+x.price.toLocaleString('ru-RU')+' BR';
+ renderTargets();save();
 }
 function renderInventory(){
- const box=$('inventoryList');box.replaceChildren();
- let total=0;
- Object.entries(inventory).forEach(([name,item])=>{
-  if(item.qty<=0)return;
-  total+=item.qty;
-  const row=document.createElement('div');row.className='inventory-row';
-  const left=document.createElement('span');left.textContent=item.emoji+' '+name;
-  const right=document.createElement('b');right.textContent='×'+item.qty;
-  row.append(left,right);box.append(row);
+ let box=document.getElementById('inventory');box.innerHTML='';
+ state.inventory.forEach((id,index)=>{
+  let x=item(id);if(!x)return;
+  let b=document.createElement('button');
+  b.className='card'+(state.source===id?' selected':'');
+  b.innerHTML='<span class="emoji">'+x.emoji+'</span><strong></strong><small>В инвентаре</small>';
+  b.querySelector('strong').textContent=x.name;
+  b.onclick=()=>selectSource(id);
+  box.append(b);
  });
- $('itemCount').textContent=total+' ПРЕДМЕТОВ';
+ document.getElementById('inventoryCount').textContent=state.inventory.length;
+ if(!state.inventory.length)box.innerHTML='<div class="empty">Инвентарь пуст</div>';
 }
-function renderHistory(){
- const box=$('history');box.replaceChildren();
- if(!history.length){box.innerHTML='<span class="muted">Пока нет операций</span>';return;}
- history.slice(0,8).forEach(h=>{
-  const row=document.createElement('div');row.className='history-row';
-  const a=document.createElement('span');a.textContent=h.text;
-  const b=document.createElement('b');b.className=h.win?'good':'bad';b.textContent=h.win?'УСПЕХ':'НЕУДАЧА';
-  row.append(a,b);box.append(row);
+function renderTargets(){
+ let box=document.getElementById('targets');box.innerHTML='';
+ let q=document.getElementById('search').value.toLowerCase();
+ let type=document.getElementById('sort').value;
+ catalog.filter(x=>(type==='all'||x.type===type)&&x.name.toLowerCase().includes(q)&&(sideFilter==='all'||x.type===sideFilter)).forEach(x=>{
+  let b=document.createElement('button');
+  b.className='card'+(state.target===x.id?' selected':'');
+  b.innerHTML='<span class="emoji">'+x.emoji+'</span><strong></strong><small class="price"></small>';
+  b.querySelector('strong').textContent=x.name;
+  b.querySelector('small').textContent=x.price.toLocaleString('ru-RU')+' BR';
+  b.onclick=()=>selectTarget(x.id);
+  box.append(b);
  });
+ if(!box.children.length)box.innerHTML='<div class="empty">Ничего не найдено</div>';
+}
+function category(type,el){
+ sideFilter=type;
+ document.querySelectorAll('.sideitem').forEach(x=>x.classList.remove('active'));
+ el.classList.add('active');
+ renderTargets();
 }
 function render(){
- $('coins').textContent=coins.toLocaleString('ru-RU');
- $('sideCoins').textContent=coins.toLocaleString('ru-RU');
- $('count').textContent=count;$('xp').textContent=xp;$('level').textContent=level;
- $('firstBadge').textContent=count>=1?'🏆':'🔒';
- $('fiveBadge').textContent=count>=5?'🏆':'🔒';
- $('tenBadge').textContent=count>=10?'🏆':'🔒';
- renderInventory();renderHistory();save();
+ document.getElementById('balance').textContent=state.coins.toLocaleString('ru-RU');
+ document.getElementById('level').textContent=state.level;
+ document.getElementById('upgrades').textContent=state.upgrades;
+ renderInventory();renderTargets();
+ let s=item(state.source),t=item(state.target);
+ if(s)selectSourceText(s);
+ if(t)selectTargetText(t);
 }
-function showResult(win,old,next){
- const box=$('result');box.className='result '+(win?'win':'lose');
- $('resultEmoji').textContent=win?'🎉':'💥';
- $('resultTitle').textContent=win?'АПГРЕЙД УДАЛСЯ!':'НЕУДАЧА!';
- $('resultText').textContent=win?'Поздравляем! Получен предмет: '+next:'Попытка не удалась. Предмет '+old+' сохранён.';
- $('overlay').classList.add('show');
+function selectSourceText(x){
+ document.getElementById('sourceEmoji').textContent=x.emoji;
+ document.getElementById('sourceName').textContent=x.name;
 }
-function closeResult(){$('overlay').classList.remove('show');}
-$('upgradeBtn').addEventListener('click',()=>{
+function selectTargetText(x){
+ document.getElementById('targetEmoji').textContent=x.emoji;
+ document.getElementById('targetName').textContent=x.name;
+ document.getElementById('targetInfo').textContent='Стоимость: '+x.price.toLocaleString('ru-RU')+' BR';
+}
+function upgrade(){
  if(busy)return;
- if(coins<COST){notify('Недостаточно BR Coins!');return;}
- busy=true;$('upgradeBtn').disabled=true;
- const old=selected.dataset.name,next=selected.dataset.next;
- const oldEmoji=selected.dataset.emoji,nextEmoji=selected.dataset.nextemoji;
- const chance=Number(selected.dataset.chance);
- coins-=COST;
- $('fromEmoji').classList.add('rolling');
- $('toEmoji').classList.add('rolling');
- playSound(350);
+ let s=item(state.source),t=item(state.target);
+ if(!s||!t)return;
+ if(!state.inventory.includes(s.id)){notify('Сначала выберите предмет из инвентаря');return}
+ if(s.id===t.id){notify('Выберите другой предмет');return}
+ let cost=500;
+ if(state.coins<cost){notify('Недостаточно BR Coins');return}
+ if(state.inventory.length>=30){notify('Инвентарь заполнен');return}
+ busy=true;state.coins-=cost;
+ let btn=document.getElementById('upgradeBtn'),g=document.getElementById('gauge');
+ btn.disabled=true;g.classList.add('working');
+ document.getElementById('gaugeCaption').textContent='Выполняется улучшение...';
+ beep(300);
  setTimeout(()=>{
-  $('fromEmoji').classList.remove('rolling');
-  $('toEmoji').classList.remove('rolling');
-  const win=Math.random()*100<chance;
-  count++;xp+=win?100:25;
-  level=Math.floor(xp/500)+1;
-  if(win){
-   if(inventory[old]&&inventory[old].qty>0)inventory[old].qty--;
-   addInventory(next,nextEmoji);
-   selected.dataset.name=next;
-   selected.dataset.emoji=nextEmoji;
-   selected.dataset.next=next+' II';
-   selected.dataset.nextemoji='🌟';
-   selected.dataset.chance=Math.max(35,chance-10);
-   playSound(850);
-  }else{
-   if(!inventory[old])inventory[old]={emoji:oldEmoji,qty:1};
-   playSound(180);
-  }
-  history.unshift({text:old+' → '+next,win});
-  updateSlot();render();showResult(win,old,next);
-  busy=false;$('upgradeBtn').disabled=false;
- },1300);
-});
-function toggleSound(){
- sound=!sound;
- $('soundBtn').textContent=sound?'🔊 Звук: включён':'🔇 Звук: выключен';
+  state.inventory.splice(state.inventory.indexOf(s.id),1);
+  state.inventory.push(t.id);
+  state.upgrades++;state.level=Math.floor(state.upgrades/5)+1;
+  g.classList.remove('working');
+  document.getElementById('gaugeCaption').textContent='Улучшение завершено!';
+  selectSource(t.id);beep(800);
+  busy=false;btn.disabled=false;save();render();
+  notify('Получен предмет: '+t.name+'!');
+ },1500);
 }
-function resetGame(){
- if(!confirm('Точно сбросить весь прогресс?'))return;
- localStorage.removeItem('brUpgraderSave');
- coins=START;count=0;xp=0;level=1;history=[];
- inventory={'BMW M5 F90':{emoji:'🚘',qty:1}};
- selected=document.querySelector('.item');
- document.querySelectorAll('.item').forEach(x=>x.classList.remove('active'));
- selected.classList.add('active');
- selected.dataset.name='BMW M5 F90';
- selected.dataset.emoji='🚘';
- selected.dataset.next='BMW M8 Competition';
- selected.dataset.nextemoji='🏎️';
- selected.dataset.chance='75';
- updateSlot();render();notify('Прогресс сброшен');
-}
-load();updateSlot();render();
+load();
+if(!state.inventory.length)state.inventory=[1,3,7];
+if(!item(state.source))state.source=state.inventory[0]||1;
+if(!item(state.target))state.target=2;
+render();
 </script>
 </body>
 </html>
