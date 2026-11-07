@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BLACK RUSSIA UPGRADER</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080a0f;color:#f4f6fb;font:14px Arial,sans-serif}
+header{padding:22px;background:#10141d;border-bottom:1px solid #30394a;display:flex;justify-content:space-between}
+.brand{font-size:21px;font-weight:900}i{color:#f04452}
+main{max-width:1100px;margin:auto;padding:30px 18px}
+.hero{text-align:center;margin:25px 0}
+.hero h1{font-size:38px}.red{color:#f04452}
+p,.muted{color:#8994a6}
+.grid{display:grid;grid-template-columns:1fr 280px;gap:18px}
+.panel{background:#141a24;border:1px solid #30394a;border-radius:14px;padding:18px}
+.items{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.item{background:#0b1018;color:white;border:1px solid #30394a;border-radius:10px;padding:15px 5px;cursor:pointer}
+.item.active{border:1px solid #f04452;background:#29131b}
+.pic{font-size:38px;display:block;margin-bottom:10px}
+.item b{font-size:11px}
+.stage{margin-top:20px;background:#0b1018;padding:15px;border-radius:12px}
+.slots{display:grid;grid-template-columns:1fr 30px 1fr;gap:8px;align-items:center}
+.slot{border:1px dashed #596477;border-radius:10px;min-height:145px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.arrow{color:#f04452;font-size:25px}
+button.upgrade{width:100%;padding:16px;margin-top:15px;border:0;border-radius:9px;background:#e52d42;color:white;font-weight:bold;cursor:pointer}
+.stat{background:#0b1018;padding:15px;border-radius:10px;margin-bottom:10px}
+.stat strong{display:block;font-size:23px;margin-top:8px}
+.history{margin-top:20px}
+.history div{padding:9px 0;border-bottom:1px solid #30394a;font-size:12px}
+.notice{margin-top:15px;font-size:11px;color:#aab3c2;line-height:1.5}
+@media(max-width:750px){.grid{grid-template-columns:1fr}.items{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">BLACK <i>RUSSIA</i></div>
+<div>👤 ГОСТЬ · ДЕМО</div>
+</header>
+<main>
+<section class="hero">
+<div class="red">FAN MADE PROJECT</div>
+<h1>BLACK RUSSIA <span class="red">UPGRADER</span></h1>
+<p>Собирай коллекцию и улучшай предметы</p>
+</section>
+<div class="grid">
+<section class="panel">
+<h3>ВЫБЕРИ ПРЕДМЕТ</h3>
+<div class="items" id="items">
+<button class="item active" data-name="BMW M5 F90" data-emoji="🚘" data-next="BMW M8" data-nextemoji="🏎️"><span class="pic">🚘</span><b>BMW M5 F90</b></button>
+<button class="item" data-name="Mercedes E63" data-emoji="🚙" data-next="Mercedes AMG GT" data-nextemoji="🏁"><span class="pic">🚙</span><b>Mercedes E63</b></button>
+<button class="item" data-name="Porsche 911" data-emoji="🏎️" data-next="Porsche 918" data-nextemoji="🏎️"><span class="pic">🏎️</span><b>Porsche 911</b></button>
+<button class="item" data-name="Спортбайк" data-emoji="🏍️" data-next="Супербайк" data-nextemoji="🏍️"><span class="pic">🏍️</span><b>Спортбайк</b></button>
+<button class="item" data-name="Золотые часы" data-emoji="⌚" data-next="Премиум часы" data-nextemoji="✨"><span class="pic">⌚</span><b>Золотые часы</b></button>
+<button class="item" data-name="Дом у моря" data-emoji="🏡" data-next="Особняк" data-nextemoji="🏰"><span class="pic">🏡</span><b>Дом у моря</b></button>
+<button class="item" data-name="Вертолёт" data-emoji="🚁" data-next="Бизнес джет" data-nextemoji="🛩️"><span class="pic">🚁</span><b>Вертолёт</b></button>
+<button class="item" data-name="Катер" data-emoji="🚤" data-next="Яхта" data-nextemoji="🛥️"><span class="pic">🚤</span><b>Катер</b></button>
+</div>
+<div class="stage">
+<div class="slots">
+<div class="slot"><span class="pic" id="fromEmoji">🚘</span><b id="fromName">BMW M5 F90</b><small>ТЕКУЩИЙ ПРЕДМЕТ</small></div>
+<div class="arrow">➜</div>
+<div class="slot"><span class="pic" id="toEmoji">🏎️</span><b id="toName">BMW M8</b><small>УЛУЧШЕНИЕ</small></div>
+</div>
+<button class="upgrade" id="upgrade">УЛУЧШИТЬ ПРЕДМЕТ ➜</button>
+</div>
+<div class="notice">Демонстрационный фанатский проект. Без денежных ставок, пополнений и вывода средств.</div>
+</section>
+<aside class="panel">
+<h3>ПРОФИЛЬ ИГРОКА</h3>
+<div class="stat">Уровень<strong id="level">1</strong></div>
+<div class="stat">Улучшений<strong id="count">0</strong></div>
+<div class="stat">Последний предмет<strong id="current">BMW M5 F90</strong></div>
+<h3>ИСТОРИЯ</h3>
+<div class="history" id="history">Пока пусто</div>
+</aside>
+</div>
+</main>
+<script>
+const items=[...document.querySelectorAll('.item')];
+let selected=items[0],count=0;
+function update(){
+ document.getElementById('fromEmoji').textContent=selected.dataset.emoji;
+ document.getElementById('fromName').textContent=selected.dataset.name;
+ document.getElementById('toEmoji').textContent=selected.dataset.nextemoji;
+ document.getElementById('toName').textContent=selected.dataset.next;
+ document.getElementById('current').textContent=selected.dataset.name;
+}
+items.forEach(item=>item.onclick=()=>{
+ selected.classList.remove('active');
+ selected=item;
+ selected.classList.add('active');
+ update();
+});
+document.getElementById('upgrade').onclick=()=>{
+ const old=selected.dataset.name;
+ const next=selected.dataset.next;
+ count++;
+ document.getElementById('count').textContent=count;
+ document.getElementById('level').textContent=Math.floor(count/3)+1;
+ const history=document.getElementById('history');
+ if(count===1)history.innerHTML='';
+ const row=document.createElement('div');
+ row.textContent=old+' → '+next+' ✓';
+ history.prepend(row);
+ selected.dataset.name=next;
+ selected.dataset.emoji=selected.dataset.nextemoji;
+ selected.dataset.next=next+' II';
+ selected.dataset.nextemoji='🌟';
+ update();
+};
+</script>
+</body>
+</html>
